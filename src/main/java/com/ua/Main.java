@@ -1,8 +1,7 @@
 package main.java.com.ua;
 
 import main.java.com.ua.controller.Controller;
-import main.java.com.ua.entity.Model;
-import main.java.com.ua.util.Reader;
+import main.java.com.ua.model.Model;
 import main.java.com.ua.view.View;
 
 /**
@@ -11,13 +10,10 @@ import main.java.com.ua.view.View;
  */
 public class Main
 {
-    public static void main( String[] args ) {
-
+    public static void main(String[] args) {
         Model model = new Model();
         View view = new View();
-        Reader reader = new Reader(view);
-
-        Controller controller = new Controller(model, view, reader);
-        controller.doProcess();
+        Controller controller = new Controller(model, view);
+        controller.processUser();
     }
 }

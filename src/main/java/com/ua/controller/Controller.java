@@ -1,26 +1,57 @@
 package main.java.com.ua.controller;
 
-import main.java.com.ua.entity.Model;
+import main.java.com.ua.model.Model;
+import main.java.com.ua.model.entity.Record;
+import main.java.com.ua.model.util.NicknameAlreadyExistsException;
 import main.java.com.ua.view.View;
-import main.java.com.ua.util.Reader;
 
 /**
  * Created by Alexandr on 26.07.2017.
  */
 public class Controller {
 
-    private Reader reader;
-    private View view;
-    private Model model;
+    Model model;
+    View view;
 
-    public Controller(Model model, View view, Reader reader) {
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-        this.reader = reader;
     }
 
-    public void doProcess() {
-        Model model = reader.read();
-        view.show(model);
+    /**
+     * Gets data from user. Creates record and adds it in model.
+     */
+    public void processUser() {
+        ScannerRegexController scannerRegexController = new ScannerRegexController(view);
+        InputNotebookController inputNotebookController = new InputNotebookController(scannerRegexController);
+
+        Record record = inputNotebookController.inputRecord();
+
+        addRecord(inputNotebookController, record);
+
+        view.showRecord(record);
+    }
+
+    /**
+     * Checks inputed record with record thar are storing in model.
+     * If the model contains an identical email address, it will re-enter.
+     * @param inputNotebookController
+     * @param record
+     */
+    void addRecord(InputNotebookController inputNotebookController, Record record) {
+        boolean transactionIncompleted = true;
+
+        do {
+            try {
+                model.addRecord(record);
+
+                transactionIncompleted = false;
+            } catch (NicknameAlreadyExistsException ex) {
+                record = ex.getRecord();
+                inputNotebookController.inputNickname();
+                record.setNickname(inputNotebookController.getNickname());
+                record.setDateOfLastChanging(inputNotebookController.getDateOfLastChanging());
+            }
+        } while (transactionIncompleted);
     }
 }

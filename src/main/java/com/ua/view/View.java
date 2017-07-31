@@ -1,65 +1,67 @@
 package main.java.com.ua.view;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import main.java.com.ua.entity.Model;
+import main.java.com.ua.model.entity.Record;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Created by Alexandr on 26.07.2017.
  */
 public class View {
-    private final String INVITATION = "Enter ";
-    private final String ERROR = "Incorrect! Try again!";
-    private final String COLON = ":";
 
-    private final String NAME = "Name: ";
-    private final String SURNAME = "Surname: ";
-    private final String PATRONYMIC = "Patronymic: ";
-    private final String NICKNAME = "Nickname: ";
-    private final String SKYPE = "Skype: ";
-    private final String HOME_PHONE = "Home phone: ";
-    private final String MOBILE_PHONE = "Mobile phone: ";
-    private final String ANOTHER_PHONE = "Another phone: ";
-    private final String EMAIL = "E-mail: ";
-    private final String GROUPS = "Groups: ";
-    private final String COMMENT = "Comment: ";
-    private final String DATES_OF_CHANGES = "Dates of changes: ";
-    private final String LAST_CHANGE = "Last change: ";
-    private final String POSTCODE = "Postcode: ";
-    private final String CITY = "City: ";
-    private final String STREET = "Street: ";
-    private final String HOUSE_NUMBER = "House number: ";
-    private final String FLAT_NUMBER = "Flat number: ";
+    private ResourceBundle bundle = ResourceBundle.getBundle("input", new Locale("en"));
 
-    private String[] titles = { "name", "surname", "patronymic", "nickname", "skype", "mobilephone", "homephone", "anotherphone",
-            "group", "email", "comment", "postcode", "city", "street", "house", "flat" };
-
-    public void showInvitation(int index) {
-        System.out.println(INVITATION + titles[index] + COLON);
+    /**
+     * Prints message in console.
+     * @param message
+     */
+    public void printMessage(String message){
+        System.out.println(message);
     }
 
-    public void showError() {
-        System.out.println(ERROR);
+    /**
+     * Concatenates messages and prints them in console.
+     * @param messages
+     */
+    public void printMessage(String... messages) {
+        StringBuilder builder = new StringBuilder();
+
+        for (String message :
+                messages) {
+            builder.append(message);
+        }
+
+        System.out.println(builder);
     }
 
-    public void show(Model model) {
+    public void showRecord(Record record) {
 
-        System.out.println(NAME + model.getName());
-        System.out.println(SURNAME + model.getSurname());
-        System.out.println(PATRONYMIC + model.getPatronymic());
-        System.out.println(NICKNAME + model.getNickname());
-        System.out.println(SKYPE + model.getSkype());
-        System.out.println(HOME_PHONE + model.getHomePhone());
-        System.out.println(MOBILE_PHONE + model.getPhone());
-        System.out.println(ANOTHER_PHONE + model.getAnotherPhone());
-        System.out.println(EMAIL + model.getEmail());
-        System.out.println(GROUPS + model.getGroups());
-        System.out.println(COMMENT + model.getComment());
-        System.out.println(DATES_OF_CHANGES + model.getDatesOfChanges());
-        System.out.println(LAST_CHANGE + model.getLastChangeDate());
-        System.out.println(POSTCODE + model.getAddress().getPostcode());
-        System.out.println(CITY + model.getAddress().getCity());
-        System.out.println(STREET + model.getAddress().getStreet());
-        System.out.println(HOUSE_NUMBER + model.getAddress().getHouse());
-        System.out.println(FLAT_NUMBER + model.getAddress().getFlat());
+        System.out.print("Fullname: ");
+        System.out.println(record.getFullname().getTruncatedName());
+        System.out.print("Nickname: ");
+        System.out.println(record.getNickname());
+        System.out.print("Group: ");
+        System.out.println(record.getGroup());
+        System.out.print("Description: ");
+        System.out.println(record.getDescription());
+        System.out.print("Main phone: ");
+        System.out.println(record.getPhone().getPhone());
+        System.out.print("Additional phone: ");
+        System.out.println(record.getPhone().getOtherPhone());
+        System.out.print("E-mail: ");
+        System.out.println(record.getEmail());
+        System.out.print("Skype: ");
+        System.out.println(record.getSkype());
+        System.out.print("Address: ");
+        System.out.println(record.getAddress().getFullAddress());
+        System.out.print("Date of entry in notebook: ");
+        System.out.println(record.getDateOfEntryInNoteBook());
+        System.out.print("Date of last changing: ");
+        System.out.println(record.getDateOfLastChanging());
+    }
+
+    public ResourceBundle getBundle() {
+        return bundle;
     }
 }
